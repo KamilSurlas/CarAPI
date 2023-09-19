@@ -27,19 +27,6 @@ namespace CarAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Insurers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Insurers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Insurances",
                 columns: table => new
                 {
@@ -47,18 +34,11 @@ namespace CarAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PolicyNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    InsurerId = table.Column<int>(type: "int", nullable: false)
+                    PolicyNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Insurances", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Insurances_Insurers_InsurerId",
-                        column: x => x.InsurerId,
-                        principalTable: "Insurers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -149,11 +129,6 @@ namespace CarAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Insurances_InsurerId",
-                table: "Insurances",
-                column: "InsurerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Repairs_CarId",
                 table: "Repairs",
                 column: "CarId");
@@ -181,9 +156,6 @@ namespace CarAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Insurances");
-
-            migrationBuilder.DropTable(
-                name: "Insurers");
         }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarAPI.Migrations
 {
     [DbContext(typeof(CarDbContext))]
-    [Migration("20230919164242_Init")]
+    [Migration("20230919171705_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -102,9 +102,6 @@ namespace CarAPI.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("InsurerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PolicyNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -114,26 +111,7 @@ namespace CarAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InsurerId");
-
                     b.ToTable("Insurances");
-                });
-
-            modelBuilder.Entity("CarAPI.Entities.Insurer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Insurers");
                 });
 
             modelBuilder.Entity("CarAPI.Entities.Repair", b =>
@@ -212,17 +190,6 @@ namespace CarAPI.Migrations
                     b.Navigation("OcInsurance");
                 });
 
-            modelBuilder.Entity("CarAPI.Entities.Insurance", b =>
-                {
-                    b.HasOne("CarAPI.Entities.Insurer", "Insurer")
-                        .WithMany("Insurances")
-                        .HasForeignKey("InsurerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Insurer");
-                });
-
             modelBuilder.Entity("CarAPI.Entities.Repair", b =>
                 {
                     b.HasOne("CarAPI.Entities.Car", "Car")
@@ -262,11 +229,6 @@ namespace CarAPI.Migrations
                 {
                     b.Navigation("Car")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CarAPI.Entities.Insurer", b =>
-                {
-                    b.Navigation("Insurances");
                 });
 #pragma warning restore 612, 618
         }
