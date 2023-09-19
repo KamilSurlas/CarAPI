@@ -51,5 +51,18 @@ namespace CarAPI.Services
 
             return car.Id;
         }
+
+        public bool Delete(int carId)
+        {
+            var car = _context
+                 .Cars                
+                 .FirstOrDefault(c => c.Id == carId);
+
+            if (car is null) return false;
+
+            _context.Cars.Remove(car);
+            _context.SaveChanges();
+            return true;
+        }
     }
 }

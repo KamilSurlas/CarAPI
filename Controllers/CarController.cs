@@ -47,5 +47,15 @@ namespace CarAPI.Controllers
 
             return Created($"/api/car/{id}", null);
         }
+        [HttpDelete("{carId}")]
+        public ActionResult Delete([FromRoute] int carId)
+        {
+            var isDeleted = _carService.Delete(carId);
+            if (isDeleted)
+            {
+                return NoContent();
+            }
+            return NotFound();
+        }
     }
 }
