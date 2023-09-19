@@ -42,7 +42,11 @@ namespace CarAPI.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }         
+            }
+            if (DateTime.Compare(dto.OcInsuranceStartDate,dto.OcInsuranceEndDate) > 1)
+            {
+                return BadRequest("Insurance end date can not be earlier or equal than insurance start date");
+            }
             var id = _carService.Create(dto);
 
             return Created($"/api/car/{id}", null);
@@ -54,6 +58,20 @@ namespace CarAPI.Controllers
             if (isDeleted)
             {
                 return NoContent();
+            }
+            return NotFound();
+        }
+        [HttpPut("{carId}")]
+        public ActionResult Update([FromBody] UpdateCarDto dto, [FromRoute] int carId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var isUpdated =_carService.Update(carId, dto);
+            if (isUpdated)
+            {
+                return Ok();
             }
             return NotFound();
         }

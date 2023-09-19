@@ -54,13 +54,28 @@ namespace CarAPI.Services
 
         public bool Delete(int carId)
         {
-            var car = _context
-                 .Cars                
+            var car = _context.Cars        
                  .FirstOrDefault(c => c.Id == carId);
 
             if (car is null) return false;
 
             _context.Cars.Remove(car);
+            _context.SaveChanges();
+            return true;
+        }
+        public bool Update(int carId, UpdateCarDto dto)
+        {
+            var car = _context
+               .Cars
+               .Include(c => c.Engine)
+               .FirstOrDefault(c => c.Id == carId);
+            if (car is null) return false;
+
+            car.Mileage = dto.Mileage;
+            car.Engine.Horsepower = dto.EngineHorsepower;
+            car.Engine.Displacement = dto.EngineDisplacement;
+            car.Engine.FuelType = dto.FuelType;
+
             _context.SaveChanges();
             return true;
         }

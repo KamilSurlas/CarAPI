@@ -17,7 +17,8 @@ namespace CarAPI.Entities
         [Required]
         public BodyType BodyType { get; set; }
         [Required]
-        public int EngineId { get; set; }     
+        public int EngineId { get; set; }
+        [Required]
         public virtual Engine Engine { get; set; }
         public int OcInsuranceId { get; set; }
         public virtual Insurance OcInsurance { get; set; }
