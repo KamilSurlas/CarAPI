@@ -9,10 +9,12 @@ namespace CarAPI.Services
     {
         private readonly CarDbContext _context;
         private readonly IMapper _mapper;
-        public CarService(CarDbContext context, IMapper mapper)
+        private readonly ILogger _logger;
+        public CarService(CarDbContext context, IMapper mapper, ILogger<CarService> logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
 
@@ -48,12 +50,14 @@ namespace CarAPI.Services
             var car = _mapper.Map<Car>(dto);
             _context.Add(car);
             _context.SaveChanges();
-
+            _logger.LogInformation($"Car with id: {car.Id} has been created");
             return car.Id;
         }
 
         public bool Delete(int carId)
         {
+            _logger.LogWarning($"Car with id: {carId} delete action invoked");
+
             var car = _context.Cars        
                  .FirstOrDefault(c => c.Id == carId);
 

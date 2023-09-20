@@ -10,11 +10,11 @@ namespace CarAPI.Entities
         [Required]
         public DateTime TechnicalReviewDate { get; set; }
         [Required]
-        public string Description { get; set; }
+        public string? Description { get; set; }
         [Required]
         public TechnicalReviewResult TechnicalReviewResult { get; set; }
         [Required]
         public int CarId { get; set; }
-        public virtual Car Car { get; set; }
+        public virtual Car? Car { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 using CarAPI;
 using CarAPI.Entities;
 using CarAPI.Services;
+using NLog.Web;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<CarDbContext>();
 builder.Services.AddScoped<CarSeeder>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ICarService, CarService>();
+builder.Host.UseNLog();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
