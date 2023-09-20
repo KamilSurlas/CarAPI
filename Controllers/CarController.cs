@@ -18,6 +18,7 @@ namespace CarAPI.Controllers
         {
            _carService = carService;
         }
+        [HttpGet]
         public ActionResult<IEnumerable<CarDto>> GetAll()
         {
             var cars = _carService.GetAll();

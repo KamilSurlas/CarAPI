@@ -48,7 +48,7 @@ namespace CarAPI.Services
 
         public int Create(NewCarDto dto)
         {
-            if (dto.OcInsuranceStartDate >= dto.OcInsuranceEndDate)
+            if (dto.OcInsuranceEndDate <= dto.OcInsuranceStartDate)
             {
                throw new InvalidInsuranceDate("Insurance end date can not be earlier or equal than insurance start date");
             }
