@@ -29,6 +29,7 @@ namespace CarAPI.Mapper
                    PolicyNumber = dto.OcPolicyNumber,
                }));
 
+            CreateMap<NewTechnicalReviewDto,TechnicalReview>();
         }
     }
 }

@@ -50,7 +50,7 @@ namespace CarAPI.Services
         {
             if (dto.OcInsuranceEndDate <= dto.OcInsuranceStartDate)
             {
-               throw new InvalidInsuranceDate("Insurance end date can not be earlier or equal than insurance start date");
+               throw new InvalidInsuranceDateException("Insurance end date can not be earlier or equal than insurance start date");
             }
             var car = _mapper.Map<Car>(dto);
             _context.Add(car);

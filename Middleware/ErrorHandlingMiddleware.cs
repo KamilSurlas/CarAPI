@@ -21,7 +21,7 @@ namespace CarAPI.Middleware
                 context.Response.StatusCode = 404;
                 await context.Response.WriteAsync(exc.Message);
             }
-            catch (InvalidInsuranceDate exc)
+            catch (InvalidInsuranceDateException exc)
             {
                 context.Response.StatusCode = 400;
                 await context.Response.WriteAsync(exc.Message);
