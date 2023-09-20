@@ -81,6 +81,7 @@ namespace CarAPI.Services
             car.Engine.FuelType = dto.FuelType;
 
             _context.SaveChanges();
+            _logger.LogInformation($"Car with id: {car.Id} has been updated");
             return true;
         }
     }

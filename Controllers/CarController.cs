@@ -28,12 +28,7 @@ namespace CarAPI.Controllers
         public ActionResult<CarDto> GetById([FromRoute] int carId) 
         {
             var car = _carService.GetById(carId);
-
-            if (car is null)
-            {
-                return NotFound();
-            }
-
+         
             return Ok(car);
         }
         [HttpPost]
@@ -54,12 +49,9 @@ namespace CarAPI.Controllers
         [HttpDelete("{carId}")]
         public ActionResult Delete([FromRoute] int carId)
         {
-            var isDeleted = _carService.Delete(carId);
-            if (isDeleted)
-            {
-                return NoContent();
-            }
-            return NotFound();
+           _carService.Delete(carId);
+           
+            return NoContent();
         }
         [HttpPut("{carId}")]
         public ActionResult Update([FromBody] UpdateCarDto dto, [FromRoute] int carId)
@@ -68,12 +60,9 @@ namespace CarAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var isUpdated =_carService.Update(carId, dto);
-            if (isUpdated)
-            {
-                return Ok();
-            }
-            return NotFound();
+            _carService.Update(carId, dto);
+
+            return Ok();
         }
     }
 }
