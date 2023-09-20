@@ -1,4 +1,6 @@
-﻿namespace CarAPI.Middleware
+﻿using CarAPI.Exceptions;
+
+namespace CarAPI.Middleware
 {
     public class ErrorHandlingMiddleware : IMiddleware
     {
@@ -14,12 +16,23 @@
 			{
 				await next.Invoke(context);
 			}
-			catch (Exception exc)
+            catch (ContentNotFoundException exc)
+            {
+                context.Response.StatusCode = 404;
+                await context.Response.WriteAsync(exc.Message);
+            }
+            catch (InvalidInsuranceDate exc)
+            {
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(exc.Message);
+            }
+            catch (Exception exc)
 			{
                 _logger.LogError(exc, exc.Message);
                 context.Response.StatusCode = 500;
                 await context.Response.WriteAsync("Ups, something went wrong");
 			}
+            
         }
     }
 }

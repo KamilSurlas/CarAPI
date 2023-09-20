@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CarAPI.Entities;
+using CarAPI.Exceptions;
 using CarAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +28,7 @@ namespace CarAPI.Services
                 .Include(c => c.Engine)
                 .Include(c => c.TechnicalReviews)
                   .FirstOrDefault(c => c.Id == id);
-            if (car is null) return null;
+            if (car is null) throw new ContentNotFoundException($"Car with id: {id} was not found");
 
             var result = _mapper.Map<CarDto>(car);
             return result;
@@ -47,6 +48,10 @@ namespace CarAPI.Services
 
         public int Create(NewCarDto dto)
         {
+            if (dto.OcInsuranceStartDate >= dto.OcInsuranceEndDate)
+            {
+               throw new InvalidInsuranceDate("Insurance end date can not be earlier or equal than insurance start date");
+            }
             var car = _mapper.Map<Car>(dto);
             _context.Add(car);
             _context.SaveChanges();
@@ -54,26 +59,25 @@ namespace CarAPI.Services
             return car.Id;
         }
 
-        public bool Delete(int carId)
+        public void Delete(int carId)
         {
             _logger.LogWarning($"Car with id: {carId} delete action invoked");
 
             var car = _context.Cars        
                  .FirstOrDefault(c => c.Id == carId);
 
-            if (car is null) return false;
+            if (car is null) throw new ContentNotFoundException($"Car with id: {carId} was not found");
 
             _context.Cars.Remove(car);
             _context.SaveChanges();
-            return true;
         }
-        public bool Update(int carId, UpdateCarDto dto)
+        public void Update(int carId, UpdateCarDto dto)
         {
             var car = _context
                .Cars
                .Include(c => c.Engine)
                .FirstOrDefault(c => c.Id == carId);
-            if (car is null) return false;
+            if (car is null) throw new ContentNotFoundException($"Car with id: {carId} was not found");
 
             car.Mileage = dto.Mileage;
             car.Engine.Horsepower = dto.EngineHorsepower;
@@ -82,7 +86,6 @@ namespace CarAPI.Services
 
             _context.SaveChanges();
             _logger.LogInformation($"Car with id: {car.Id} has been updated");
-            return true;
         }
     }
 }
