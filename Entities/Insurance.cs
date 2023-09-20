@@ -11,7 +11,9 @@ namespace CarAPI.Entities
         public DateTime EndDate { get; set; }
         [Required]
         public string PolicyNumber { get; set; }
-        [Required]    
+        [Required]
+        public int CarId { get; set; }
+        [Required]
         public virtual Car Car { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace CarAPI.Entities
         public decimal Displacement  {get; set; }
         [Required]
         public FuelType FuelType { get; set; }
+        public int CarId { get; set; }
         public virtual Car Car { get; set; }
     }
 }

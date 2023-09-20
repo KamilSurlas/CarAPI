@@ -8,5 +8,6 @@ namespace CarAPI.Models
         public int EngineHorsepower { get; set; }
         public decimal EngineDisplacement { get; set; }
         public FuelType FuelType { get; set; }
+       
     }
 }
