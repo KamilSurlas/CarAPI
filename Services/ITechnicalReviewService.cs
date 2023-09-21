@@ -9,5 +9,6 @@ namespace CarAPI.Services
         IEnumerable<TechnicalReviewDto> GetAll(int carId);
         void DeleteAll(int carId);
         void DeleteById(int carId, int technicalReviewId);
+        void UpdateTechnicalReview(int carId, int technichalReviewId, UpdateTechnicalReviewDto dto);
     }
 }

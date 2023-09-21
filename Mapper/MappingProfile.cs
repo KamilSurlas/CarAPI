@@ -4,9 +4,9 @@ using CarAPI.Models;
 
 namespace CarAPI.Mapper
 {
-    public class CarMappingProfile : Profile
+    public class MappingProfile : Profile
     {
-        public CarMappingProfile()
+        public MappingProfile()
         {
             CreateMap<Car, CarDto>()
                 .ForMember(cd => cd.EngineHorsepower, c => c.MapFrom(d => d.Engine.Horsepower))
@@ -15,6 +15,13 @@ namespace CarAPI.Mapper
 
             CreateMap<TechnicalReview, TechnicalReviewDto>();
             CreateMap<Repair, RepairDto>();
+
+            CreateMap<UpdateCarDto, Car>()
+                .ForMember(c => c.Mileage, u => u.MapFrom(d => d.Mileage))
+                .ForMember(c => c.Drivetrain, n => n.MapFrom(d => d.Drivetrain))
+                .ForMember(c => c.RegistrationNumber, n => n.MapFrom(d => d.RegistrationNumber));
+                
+                
 
             CreateMap<NewCarDto, Car>()
                .ForMember(c => c.Engine, n => n.MapFrom(dto => new Engine()
@@ -30,6 +37,9 @@ namespace CarAPI.Mapper
                }));
 
             CreateMap<NewTechnicalReviewDto,TechnicalReview>();
+
+            CreateMap<UpdateTechnicalReviewDto, TechnicalReview>();
+                
         }
     }
 }

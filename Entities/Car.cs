@@ -10,12 +10,16 @@ namespace CarAPI.Entities
         [Required]
         public string BrandName { get; set; }
         [Required]
+        public string RegistrationNumber { get; set; }
+        [Required]
         public string ModelName { get; set; }
         [Required]
         public int ProductionYear { get; set; }
         public double Mileage { get; set; }
         [Required]
         public BodyType BodyType { get; set; }
+        [Required]
+        public Drivetrain Drivetrain { get; set; }
         [Required]
         public virtual Engine Engine { get; set; }
         [Required]

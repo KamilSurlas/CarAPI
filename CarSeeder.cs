@@ -33,6 +33,8 @@ namespace CarAPI
                     ModelName = "Yaris",
                     ProductionYear = 2019,
                     Mileage = 10.0D,
+                    RegistrationNumber = "GD QWE12",
+                    Drivetrain = Drivetrain.FWD,
                     BodyType = BodyType.Hatchback,
                     Engine = new Engine()
                     {
@@ -64,6 +66,8 @@ namespace CarAPI
                     ModelName = "Corsa",
                     ProductionYear = 2010,
                     Mileage = 598.15D,
+                    RegistrationNumber = "ST 123SD",
+                    Drivetrain = Drivetrain.FWD,
                     BodyType = BodyType.Hatchback,
                     Engine = new Engine()
                     {

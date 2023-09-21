@@ -36,8 +36,8 @@ namespace CarAPI.Services
         {
             var car = GetCarById(carId);
 
-            var technicalReview = _context.TechnicalReviews.FirstOrDefault(t => t.Id == technicalReviewId);
-            if (technicalReview is null || technicalReview.CarId != carId) throw new ContentNotFoundException($"Technical review with id: {technicalReviewId} was not found (or provided car id is wrong [car id: {carId}])");
+            var technicalReview = GetTechnicalReviewById(technicalReviewId);
+            if (technicalReview.CarId != carId) throw new ContentNotFoundException($"Provided car id is wrong [car id: {carId}])");
 
             var result = _mapper.Map<TechnicalReviewDto>(technicalReview);
             return result;
@@ -70,16 +70,36 @@ namespace CarAPI.Services
 
             return car;
         }
-
+        private TechnicalReview GetTechnicalReviewById(int technicalReviewId)
+        {
+            var technicalReview = _context.TechnicalReviews.FirstOrDefault(t => t.Id == technicalReviewId);
+            if (technicalReview is null) throw new ContentNotFoundException($"Technical review with id: {technicalReviewId} was not found");
+            return technicalReview;            
+        }
         public void DeleteById(int carId, int technicalReviewId)
         {
             _logger.LogWarning($"Technical review with id: {technicalReviewId} delete action invoked (car id: {carId})");
             var car = GetCarById(carId);
-            var technicalReview = _context.TechnicalReviews.FirstOrDefault(t => t.Id == technicalReviewId);
-            if (technicalReview is null || technicalReview.CarId != carId) throw new ContentNotFoundException($"Technical review with id: {technicalReviewId} was not found (or provided car id is wrong [car id: {carId}])");
+            var technicalReview = GetTechnicalReviewById(technicalReviewId);
+            if (technicalReview.CarId != carId) throw new ContentNotFoundException($"Provided car id is wrong [car id: {carId}])");
 
             _context.TechnicalReviews.Remove(technicalReview);
             _context.SaveChanges();
+        }
+
+        public void UpdateTechnicalReview(int carId, int technicalReviewId, UpdateTechnicalReviewDto dto)
+        {
+            var car = GetCarById(carId);
+            var technicalReview = GetTechnicalReviewById(technicalReviewId);
+            if (technicalReview.CarId != carId) throw new ContentNotFoundException($"Provided car id is wrong [car id: {carId}])");
+            _mapper.Map(dto, technicalReview);
+
+            technicalReview.CarId = carId;
+
+            _context.SaveChanges();
+            _logger.LogWarning($"Technical review with id: {technicalReviewId}  has been updated (car id: {carId})");
+
+
         }
     }
 }

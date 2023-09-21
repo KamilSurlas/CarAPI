@@ -5,9 +5,8 @@ namespace CarAPI.Models
     public class UpdateCarDto
     {
         public double Mileage { get; set; }
-        public int EngineHorsepower { get; set; }
-        public decimal EngineDisplacement { get; set; }
-        public FuelType FuelType { get; set; }
-       
+        public string RegistrationNumber { get; set; }
+        public Drivetrain Drivetrain { get; set; }
+
     }
 }

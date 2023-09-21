@@ -79,13 +79,24 @@ namespace CarAPI.Services
                .FirstOrDefault(c => c.Id == carId);
             if (car is null) throw new ContentNotFoundException($"Car with id: {carId} was not found");
 
-            car.Mileage = dto.Mileage;
-            car.Engine.Horsepower = dto.EngineHorsepower;
-            car.Engine.Displacement = dto.EngineDisplacement;
-            car.Engine.FuelType = dto.FuelType;
+
+            _mapper.Map(dto, car);
 
             _context.SaveChanges();
             _logger.LogInformation($"Car with id: {car.Id} has been updated");
+        }
+        public CarDto GetByRegistrationNumber(string registrationNumber)
+        {
+            var car =  _context
+                  .Cars
+                  .Include(c => c.CarRepairs)
+                .Include(c => c.Engine)
+                .Include(c => c.TechnicalReviews)
+                  .FirstOrDefault(c => c.RegistrationNumber == registrationNumber);
+            if (car is null) throw new ContentNotFoundException($"Car with registration number: {registrationNumber} was not found");
+
+            var result = _mapper.Map<CarDto>(car);
+            return result;
         }
     }
 }

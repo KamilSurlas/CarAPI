@@ -33,6 +33,14 @@ namespace CarAPI.Controllers
          
             return Ok(car);
         }
+        [HttpGet]
+        [Route("byNumber/{registrationNumber}")]
+        public ActionResult<CarDto> GetByRegistrationNumber([FromRoute] string registrationNumber)
+        {
+            var car = _carService.GetByRegistrationNumber(registrationNumber);
+
+            return Ok(car);
+        }
         [HttpPost]
         public ActionResult AddCar([FromBody] NewCarDto dto)
         {                  

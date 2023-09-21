@@ -10,11 +10,13 @@ namespace CarAPI.Models
         public string BrandName { get; set; }
     
         public string ModelName { get; set; }
-    
+        public string RegistrationNumber { get; set; }
+
         public int ProductionYear { get; set; }
         public double Mileage { get; set; }
         
         public BodyType BodyType { get; set; }
+        public Drivetrain Drivetrain { get; set; }
 
         public int EngineHorsepower { get; set; }
         public decimal EngineDisplacement { get; set; }

@@ -17,8 +17,10 @@ namespace CarAPI.Entities
             modelBuilder.Entity<Engine>().Property(e => e.Displacement).HasColumnType("decimal(3,1)");
             modelBuilder.Entity<Repair>().Property(r => r.RepairCost).HasColumnType("decimal(7,3)");
             modelBuilder.Entity<Car>().Property(c => c.BodyType).HasConversion(new EnumToStringConverter<BodyType>());
+            modelBuilder.Entity<Car>().Property(c => c.Drivetrain).HasConversion(new EnumToStringConverter<Drivetrain>());
             modelBuilder.Entity<Engine>().Property(e => e.FuelType).HasConversion(new EnumToStringConverter<FuelType>());
             modelBuilder.Entity<TechnicalReview>().Property(t => t.TechnicalReviewResult).HasConversion(new EnumToStringConverter<TechnicalReviewResult>());
+         
         }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

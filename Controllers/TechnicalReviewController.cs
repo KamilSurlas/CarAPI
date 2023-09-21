@@ -46,5 +46,12 @@ namespace CarAPI.Controllers
             _technicalReviewService.DeleteById(carId, technicalReviewId);
             return NoContent();
         }
+        [HttpPut("{technicalReviewId}")]
+        public ActionResult Update([FromRoute] int carId, [FromRoute] int technicalReviewId, [FromBody] UpdateTechnicalReviewDto dto)
+        {
+            _technicalReviewService.UpdateTechnicalReview(carId, technicalReviewId, dto);
+
+            return Ok();
+        }
     }
 }

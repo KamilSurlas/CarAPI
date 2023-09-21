@@ -12,6 +12,7 @@ namespace CarAPI.Models
         [MaxLength(30)]
         public string ModelName { get; set; }
         [Required]
+        public string RegistrationNumber { get; set; }
         public int ProductionYear { get; set; }
         [Required]
         public double Mileage { get; set; }
@@ -23,6 +24,8 @@ namespace CarAPI.Models
         public decimal EngineDisplacement { get; set; }
         [Required]
         public FuelType FuelType { get; set; }
+        [Required]
+        public Drivetrain Drivetrain { get; set; }
         [Required]
         public DateTime OcInsuranceStartDate { get; set; }
         [Required]
