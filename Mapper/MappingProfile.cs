@@ -39,7 +39,8 @@ namespace CarAPI.Mapper
             CreateMap<NewTechnicalReviewDto,TechnicalReview>();
 
             CreateMap<UpdateTechnicalReviewDto, TechnicalReview>();
-                
+            
+            CreateMap<NewRepairDto, Repair>();
         }
     }
 }
