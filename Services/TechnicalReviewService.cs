@@ -81,7 +81,7 @@ namespace CarAPI.Services
             _logger.LogWarning($"Technical review with id: {technicalReviewId} delete action invoked (car id: {carId})");
             var car = GetCarById(carId);
             var technicalReview = GetTechnicalReviewById(technicalReviewId);
-            if (technicalReview.CarId != carId) throw new ContentNotFoundException($"Provided car id is wrong [car id: {carId}])");
+            if (technicalReview.CarId != carId) throw new ContentNotFoundException($"Provided car id is wrong (car id: {carId})");
 
             _context.TechnicalReviews.Remove(technicalReview);
             _context.SaveChanges();
@@ -91,7 +91,7 @@ namespace CarAPI.Services
         {
             var car = GetCarById(carId);
             var technicalReview = GetTechnicalReviewById(technicalReviewId);
-            if (technicalReview.CarId != carId) throw new ContentNotFoundException($"Provided car id is wrong [car id: {carId}])");
+            if (technicalReview.CarId != carId) throw new ContentNotFoundException($"Provided car id is wrong (car id: {carId})");
             _mapper.Map(dto, technicalReview);
 
             technicalReview.CarId = carId;

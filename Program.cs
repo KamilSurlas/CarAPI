@@ -15,6 +15,7 @@ builder.Services.AddScoped<CarSeeder>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<ITechnicalReviewService,TechnicalReviewService>();
+builder.Services.AddScoped<IRepairService, RepairService>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddScoped<RequestTimeMiddleware>();
 builder.Services.AddSwaggerGen();
