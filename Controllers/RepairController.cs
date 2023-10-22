@@ -1,4 +1,5 @@
-﻿using CarAPI.Models;
+﻿using CarAPI.Entities;
+using CarAPI.Models;
 using CarAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,10 +29,30 @@ namespace CarAPI.Controllers
             return Ok(repairs);
         }
         [HttpGet("{repairId}")]
-        public ActionResult<TechnicalReviewDto> GetById([FromRoute] int carId, [FromRoute] int repairId)
+        public ActionResult<Repair> GetById([FromRoute] int carId, [FromRoute] int repairId)
         {
             RepairDto repair = _repairService.GetById(carId, repairId);
             return Ok(repair);
+        }
+        [HttpDelete]
+        public ActionResult DeleteAll([FromRoute] int carId) 
+        {
+            _repairService.DeleteAll(carId);
+
+            return NoContent();
+        }
+        [HttpDelete("{repairId}")]
+        public ActionResult DeleteById([FromRoute] int carId, [FromRoute] int repairId)
+        {
+            _repairService.DeleteById(carId, repairId);
+            return NoContent();
+        }
+        [HttpPut("{repairId}")]
+        public ActionResult Update([FromRoute] int carId, [FromRoute] int repairId, [FromBody] UpdateRepairDto dto)
+        {
+            _repairService.UpdateRepair(carId, repairId, dto);
+
+            return Ok();
         }
     }
 }

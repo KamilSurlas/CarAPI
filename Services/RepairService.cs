@@ -53,7 +53,7 @@ namespace CarAPI.Services
         {
             var car = GetCarById(carId);
             var repair = GetRepairById(repairId);
-            if(repair.CarId != carId) throw new ContentNotFoundException($"Provided car id is wrong [car id: {carId}])");
+            if(repair.CarId != carId) throw new ContentNotFoundException($"Provided car id is wrong (car id: {carId})");
 
             var result = _mapper.Map<RepairDto>(repair);
             return result;
@@ -64,6 +64,38 @@ namespace CarAPI.Services
             var repair = _context.Repairs.FirstOrDefault(r => r.Id == repairId);
             if (repair is null) throw new ContentNotFoundException($"Repair with id: {repairId} was not found");
             return repair;
+        }
+
+        public void DeleteAll(int carId)
+        {
+            _logger.LogWarning($"Repairs delete action invoked (car id: {carId})");
+            var car = GetCarById(carId);
+            _context.RemoveRange(car.CarRepairs);
+            _context.SaveChanges();
+        }
+
+        public void DeleteById(int carId, int repairId)
+        {
+            _logger.LogWarning($"Repair with id: {repairId} delete action invoked (car id: {carId})");
+            var car = GetCarById(carId);
+            var repair = GetRepairById(repairId);
+            if (repair.CarId != carId) throw new ContentNotFoundException($"Provided car id is wrong (car id: {carId})");
+
+            _context.Repairs.Remove(repair);
+            _context.SaveChanges();
+        }
+
+        public void UpdateRepair(int carId, int repairId, UpdateRepairDto dto)
+        {
+            var car = GetCarById(carId);
+            var repair = GetRepairById(repairId);
+            if (repair.CarId != carId) throw new ContentNotFoundException($"Provided car id is wrong (car id: {carId})");
+            _mapper.Map(dto, repair);
+
+            repair.CarId = carId;
+
+            _context.SaveChanges();
+            _logger.LogWarning($"Repair with id: {repairId}  has been updated (car id: {carId})");
         }
     }
 }
