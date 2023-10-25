@@ -12,10 +12,11 @@ namespace CarAPI.Mapper
                 .ForMember(cd => cd.EngineHorsepower, c => c.MapFrom(d => d.Engine.Horsepower))
                 .ForMember(cd => cd.EngineDisplacement, c => c.MapFrom(d => d.Engine.Displacement))
                 .ForMember(cd => cd.FuelType, c => c.MapFrom(d => d.Engine.FuelType));
+                
 
             CreateMap<TechnicalReview, TechnicalReviewDto>();
             CreateMap<Repair, RepairDto>();
-
+            CreateMap<Insurance,  InsuranceDto>();  
             CreateMap<UpdateCarDto, Car>()
                 .ForMember(c => c.Mileage, u => u.MapFrom(d => d.Mileage))
                 .ForMember(c => c.Drivetrain, n => n.MapFrom(d => d.Drivetrain))
@@ -42,6 +43,9 @@ namespace CarAPI.Mapper
             
             CreateMap<NewRepairDto, Repair>();
             CreateMap<UpdateRepairDto, Repair>();
+
+            CreateMap<NewInsuranceDto, Insurance>();
+            CreateMap<UpdateInsuranceDto, Insurance>();
         }
     }
 }

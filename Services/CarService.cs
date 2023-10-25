@@ -27,6 +27,7 @@ namespace CarAPI.Services
                   .Include(c => c.CarRepairs)
                 .Include(c => c.Engine)
                 .Include(c => c.TechnicalReviews)
+                .Include(c => c.OcInsurance)
                   .FirstOrDefault(c => c.Id == id);
             if (car is null) throw new ContentNotFoundException($"Car with id: {id} was not found");
 
@@ -40,7 +41,8 @@ namespace CarAPI.Services
               .Cars
               .Include(c => c.CarRepairs)
               .Include(c => c.Engine)
-              .Include(c => c.TechnicalReviews)
+              .Include(c => c.TechnicalReviews) 
+              .Include(c => c.OcInsurance)
               .ToList();
             var results = _mapper.Map<List<CarDto>>(cars);
             return results;
@@ -92,6 +94,7 @@ namespace CarAPI.Services
                   .Include(c => c.CarRepairs)
                 .Include(c => c.Engine)
                 .Include(c => c.TechnicalReviews)
+                .Include(c => c.OcInsurance)
                   .FirstOrDefault(c => c.RegistrationNumber == registrationNumber);
             if (car is null) throw new ContentNotFoundException($"Car with registration number: {registrationNumber} was not found");
 

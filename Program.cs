@@ -16,12 +16,13 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<ITechnicalReviewService,TechnicalReviewService>();
 builder.Services.AddScoped<IRepairService, RepairService>();
+builder.Services.AddScoped<IInsuranceService, InsuranceService>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddScoped<RequestTimeMiddleware>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());  
 });
 var app = builder.Build();
 var scope = app.Services.CreateScope();
