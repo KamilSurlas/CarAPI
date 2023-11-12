@@ -15,7 +15,7 @@ namespace CarAPI.Models
         public string RegistrationNumber { get; set; }
         public int ProductionYear { get; set; }
         [Required]
-        public double Mileage { get; set; }
+        public double Mileage { get; set; } = 0;
         [Required]
         public BodyType BodyType { get; set; }
         [Required]
@@ -29,7 +29,7 @@ namespace CarAPI.Models
         [Required]
         public DateTime OcInsuranceStartDate { get; set; }
         [Required]
-        public DateTime OcInsuranceEndDate { get; set; }
+        public DateTime OcInsuranceEndDate { get; set; } 
         [Required]
         public string OcPolicyNumber { get; set; }
     }

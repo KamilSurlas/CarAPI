@@ -1,12 +1,14 @@
 ﻿using CarAPI.Entities;
 using CarAPI.Models;
 using CarAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarAPI.Controllers
 {
     [Route("api/car/{carId}/repair")]
     [ApiController]
+    [Authorize(Roles = "Admin,Mechanic,User")]
     public class RepairController: ControllerBase
     {
         private readonly IRepairService _repairService;

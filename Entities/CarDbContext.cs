@@ -12,6 +12,8 @@ namespace CarAPI.Entities
         public DbSet<Insurance> Insurances { get; set;}
         public DbSet<Repair> Repairs { get; set; }
         public DbSet<TechnicalReview> TechnicalReviews { get;set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Engine>().Property(e => e.Displacement).HasColumnType("decimal(3,1)");

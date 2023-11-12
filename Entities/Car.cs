@@ -27,6 +27,7 @@ namespace CarAPI.Entities
         public virtual Insurance OcInsurance { get; set; }
         public virtual List<Repair> CarRepairs { get; set; }
         public virtual List<TechnicalReview> TechnicalReviews { get; set; }
-
+        public int? CreatedByUserId { get; set; }
+        public virtual User CreatedByUser { get; set; }
     }
 }

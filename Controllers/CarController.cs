@@ -2,13 +2,16 @@
 using CarAPI.Entities;
 using CarAPI.Models;
 using CarAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CarAPI.Controllers
 {
     [Route("api/car")]
     [ApiController]
+    [Authorize]
     public class CarController: ControllerBase
     {
         private readonly ICarService _carService;
@@ -34,7 +37,7 @@ namespace CarAPI.Controllers
             return Ok(car);
         }
         [HttpGet]
-        [Route("byNumber/{registrationNumber}")]
+        [Route("{registrationNumber}")]
         public ActionResult<CarDto> GetByRegistrationNumber([FromRoute] string registrationNumber)
         {
             var car = _carService.GetByRegistrationNumber(registrationNumber);
@@ -43,9 +46,8 @@ namespace CarAPI.Controllers
         }
         [HttpPost]
         public ActionResult AddCar([FromBody] NewCarDto dto)
-        {                  
+        {           
             var id = _carService.Create(dto);
-
             return Created($"/api/car/{id}", null);
         }
         [HttpDelete("{carId}")]

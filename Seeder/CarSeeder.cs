@@ -1,19 +1,34 @@
 ﻿using CarAPI.Entities;
 using CarAPI.Enums;
+using Microsoft.AspNetCore.Identity;
 
-namespace CarAPI
+namespace CarAPI.Seeder
 {
-    public class CarSeeder   // Class to insert few cars if database is empty
+    public class CarSeeder : ICarSeeder
     {
         private readonly CarDbContext _context;
-        public CarSeeder(CarDbContext context)
+        private readonly IPasswordHasher<User> _passwordHasher;
+        public CarSeeder(CarDbContext context, IPasswordHasher<User> passwordHasher)
         {
             _context = context;
+            _passwordHasher = passwordHasher;
         }
         public void Seed()
         {
             if (_context.Database.CanConnect())
             {
+                if (!_context.Roles.Any())
+                {
+                    var roles = GetRoles();
+                    _context.Roles.AddRange(roles);
+                    _context.SaveChanges();
+                }
+                if(!_context.Users.Where(u => u.RoleId == 2).Any())
+                {
+                    var admin = CreateAdminAccount();
+                    _context.Users.Add(admin);
+                    _context.SaveChanges();
+                }
                 if (!_context.Cars.Any())
                 {
                     var cars = GetCars();
@@ -23,6 +38,45 @@ namespace CarAPI
             }
         }
 
+        private User CreateAdminAccount()
+        {
+            var admin = new User()
+            {
+                DateOfBirth = new DateTime(2000, 01, 01),
+                FirstName = "Admin",
+                LastName = "Admin",
+                Email = "admin@wp.pl",
+                HashedPassword = null!,
+                RoleId = 2
+            };
+
+            admin.HashedPassword = _passwordHasher.HashPassword(admin, "admin123@!");
+            return admin;
+        }
+
+        private IEnumerable<Role> GetRoles()
+        {
+            var roles = new List<Role>()
+         {
+             new Role()
+             {
+                 RoleName = "User"
+             },
+             new Role()
+             {
+                 RoleName = "Admin"
+             },
+             new Role()
+             {
+                 RoleName = "Mechanic"
+             },           
+             new Role()
+             {
+                 RoleName = "Insurer"
+             }
+         };
+            return roles;
+        }
         private IEnumerable<Car> GetCars()
         {
             var cars = new List<Car>()
@@ -57,6 +111,7 @@ namespace CarAPI
                             TechnicalReviewResult = TechnicalReviewResult.Positive
                         }
                     }
+                   
 
 
                 },
@@ -89,7 +144,7 @@ namespace CarAPI
                             Description = "First technical review after production",
                             TechnicalReviewResult = TechnicalReviewResult.Positive
                         }
-                    }
+                    } 
 
 
                 }

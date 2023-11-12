@@ -17,6 +17,11 @@ namespace CarAPI.Middleware
 			{
 				await next.Invoke(context);
 			}
+            catch (ForbiddenException exc)
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsync(exc.Message);
+            }
             catch (ContentNotFoundException exc)
             {
                 context.Response.StatusCode = 404;
@@ -25,6 +30,12 @@ namespace CarAPI.Middleware
             catch (InvalidInsuranceDateException exc)
             {
                 context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(exc.Message);
+            }
+            catch (BadEmailOrPassword exc)
+            {
+                _logger.LogError(exc, exc.Message);
+                context.Response.StatusCode = 500;
                 await context.Response.WriteAsync(exc.Message);
             }
             catch (DbUpdateException exc)

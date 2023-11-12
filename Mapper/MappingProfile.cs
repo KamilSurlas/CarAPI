@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CarAPI.Entities;
 using CarAPI.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CarAPI.Mapper
 {
@@ -46,6 +47,9 @@ namespace CarAPI.Mapper
 
             CreateMap<NewInsuranceDto, Insurance>();
             CreateMap<UpdateInsuranceDto, Insurance>();
+
+            CreateMap<RegisterUserDto, User>().ConvertUsing<RegisterUserConverter>();
+               
         }
     }
 }
