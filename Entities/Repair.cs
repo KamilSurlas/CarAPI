@@ -13,5 +13,7 @@ namespace CarAPI.Entities
         [Required]
         public int CarId { get; set; }
         public virtual Car Car { get; set; }
+        public int? AddedByUserId { get; set; }
+        public virtual User? AddedByUser { get; set; }
     }
 }

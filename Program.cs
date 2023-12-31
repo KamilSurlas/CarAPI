@@ -20,7 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Host.UseNLog();
 builder.Services.AddControllers();
-builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, CarOperationRequirementHandler>();
 builder.Services.AddDbContext<CarDbContext>();
 builder.Services.AddScoped<CarSeeder>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

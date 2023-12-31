@@ -64,7 +64,21 @@ namespace CarAPI.Services
             }
             var car = _mapper.Map<Car>(dto);
             car.CreatedByUserId = _userContextService.UserId;
-
+            car.OcInsurance.AddedByUserId = _userContextService.UserId;
+            if (car.CarRepairs is not null)
+            {
+                foreach (var repair in car.CarRepairs)
+                {
+                    repair.AddedByUserId = _userContextService.UserId;
+                }
+            }
+            if (car.TechnicalReviews is not null)
+            {
+                foreach (var technicalReview in car.TechnicalReviews)
+                {
+                    technicalReview.AddedByUserId = _userContextService.UserId;
+                }
+            }
             _context.Add(car);
             _context.SaveChanges();
             _logger.LogInformation($"Car with id: {car.Id} has been created by user with id: {_userContextService.UserId}");

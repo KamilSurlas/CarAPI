@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using CarAPI.Authorization;
 using CarAPI.Entities;
+using CarAPI.Enums;
 using CarAPI.Exceptions;
 using CarAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarAPI.Services
@@ -11,11 +14,15 @@ namespace CarAPI.Services
         private readonly CarDbContext _context;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
-        public InsuranceService(CarDbContext context, IMapper mapper, ILogger<InsuranceService> logger)
+        private readonly IAuthorizationService _authorizationService;
+        private readonly IUserContextService _userContextService;
+        public InsuranceService(CarDbContext context, IMapper mapper, ILogger<InsuranceService> logger, IAuthorizationService authorizationService, IUserContextService userContextService)
         {
             _context = context;
             _mapper = mapper;
             _logger = logger;
+            _authorizationService = authorizationService;
+            _userContextService = userContextService;
         }
         private Car GetCarById(int carId)
         {
@@ -48,12 +55,17 @@ namespace CarAPI.Services
             var car = GetCarById(carId);
             var insurance = GetInsuranceById(car.OcInsurance.Id);
             if (insurance.CarId != carId) throw new ContentNotFoundException($"Provided car id is wrong (car id: {carId})");
+            var authResult = _authorizationService.AuthorizeAsync(_userContextService.User, insurance, new ResourceOperationRequirement(ResourceOperationType.Update)).Result;
+            if (!authResult.Succeeded)
+            {
+                throw new ForbiddenException("Permission denied");
+            }
             _mapper.Map(dto, insurance);
 
             insurance.CarId = carId;
 
             _context.SaveChanges();
-            _logger.LogWarning($"Insurance with id: {insurance.Id}  has been updated (car id: {carId})");
+            _logger.LogWarning($"Insurance with id: {insurance.Id}  has been updated (car id: {carId}) by user with id:  {_userContextService.UserId}");
         }
     }
 }

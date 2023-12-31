@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace CarAPI.Authorization
 {
-    public class ResourceOperationRequirementHandler : AuthorizationHandler<ResourceOperationRequirement, Car>
+    public class CarOperationRequirementHandler : AuthorizationHandler<ResourceOperationRequirement, Car>
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ResourceOperationRequirement requirement, Car car)
         {
