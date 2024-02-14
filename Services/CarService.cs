@@ -43,7 +43,7 @@ namespace CarAPI.Services
             return result;
         }
 
-        public IEnumerable<CarDto> GetAll()
+        public IEnumerable<CarDto> GetAll(string searchPhrase)
         {
             var cars = _context
               .Cars
@@ -51,6 +51,9 @@ namespace CarAPI.Services
               .Include(c => c.Engine)
               .Include(c => c.TechnicalReviews) 
               .Include(c => c.OcInsurance)
+              .Where(c => searchPhrase == null || (c.BrandName.ToLower().Contains(searchPhrase.ToLower()) 
+              || c.ModelName.ToLower().Contains(searchPhrase.ToLower()) 
+              || c.RegistrationNumber.ToLower().Contains(searchPhrase.ToLower())))
               .ToList();
             var results = _mapper.Map<List<CarDto>>(cars);
             return results;
