@@ -22,9 +22,9 @@ namespace CarAPI.Controllers
            _carService = carService;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<CarDto>> GetAll([FromQuery] string? searchPhrase)
+        public ActionResult<IEnumerable<CarDto>> GetAll([FromQuery] Query query)
         {
-            var cars = _carService.GetAll(searchPhrase);
+            var cars = _carService.GetAll(query);
                 
             return Ok(cars);
         }

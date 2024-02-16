@@ -7,7 +7,7 @@ namespace CarAPI.Services
     {
         int Create(NewCarDto dto);
         void Delete(int carId);
-        IEnumerable<CarDto> GetAll(string searchPhrase);
+        PageResult<CarDto> GetAll(Query query);
         CarDto GetById(int id);
         CarDto GetByRegistrationNumber(string registrationNumber);
         public void Update(int carId, UpdateCarDto dto);

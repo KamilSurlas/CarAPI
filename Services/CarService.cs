@@ -5,6 +5,7 @@ using CarAPI.Enums;
 using CarAPI.Exceptions;
 using CarAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -43,20 +44,27 @@ namespace CarAPI.Services
             return result;
         }
 
-        public IEnumerable<CarDto> GetAll(string searchPhrase)
+        public PageResult<CarDto> GetAll(Query query)
         {
-            var cars = _context
+            var baseQuery = _context
               .Cars
               .Include(c => c.CarRepairs)
               .Include(c => c.Engine)
-              .Include(c => c.TechnicalReviews) 
+              .Include(c => c.TechnicalReviews)
               .Include(c => c.OcInsurance)
-              .Where(c => searchPhrase == null || (c.BrandName.ToLower().Contains(searchPhrase.ToLower()) 
-              || c.ModelName.ToLower().Contains(searchPhrase.ToLower()) 
-              || c.RegistrationNumber.ToLower().Contains(searchPhrase.ToLower())))
+              .Where(c => query.SearchPhrase == null || (c.BrandName.ToLower().Contains(query.SearchPhrase.ToLower())
+              || c.ModelName.ToLower().Contains(query.SearchPhrase.ToLower())
+              || c.RegistrationNumber.ToLower().Contains(query.SearchPhrase.ToLower())));
+
+            var cars = baseQuery
+              .Skip(query.PageSize * (query.PageNumber - 1))
+              .Take(query.PageSize)
               .ToList();
-            var results = _mapper.Map<List<CarDto>>(cars);
-            return results;
+            var carResults = _mapper.Map<List<CarDto>>(cars);
+
+            var result = new PageResult<CarDto>(carResults,baseQuery.Count() , query.PageSize, query.PageNumber);
+
+            return result;
         }
 
         public int Create(NewCarDto dto)
