@@ -16,11 +16,13 @@ namespace CarAPI.Services
         private readonly ILogger _logger;
         private readonly IAuthorizationService _authorizationService;
         private readonly IUserContextService _userContextService;
-        public TechnicalReviewService(CarDbContext context, IMapper mapper, ILogger<TechnicalReviewService> logger)
+        public TechnicalReviewService(CarDbContext context, IMapper mapper, ILogger<TechnicalReviewService> logger, IAuthorizationService authorizationService, IUserContextService userContextService)
         {
             _context = context;
             _mapper = mapper;
             _logger = logger;
+            _authorizationService = authorizationService;
+            _userContextService = userContextService;
         }
         public int Create(int carId, NewTechnicalReviewDto dto)
         {

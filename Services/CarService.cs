@@ -7,6 +7,7 @@ using CarAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using System.Security.Claims;
 
 namespace CarAPI.Services
@@ -55,6 +56,25 @@ namespace CarAPI.Services
               .Where(c => query.SearchPhrase == null || (c.BrandName.ToLower().Contains(query.SearchPhrase.ToLower())
               || c.ModelName.ToLower().Contains(query.SearchPhrase.ToLower())
               || c.RegistrationNumber.ToLower().Contains(query.SearchPhrase.ToLower())));
+
+
+            if (!string.IsNullOrEmpty(query.SortBy))
+            {
+                var columnsSelector = new Dictionary<string, Expression<Func<Car, object>>>()
+                {
+                    {nameof(Car.BrandName), c => c.BrandName },
+                    {nameof(Car.ModelName), c => c.ModelName },
+                    {nameof(Car.RegistrationNumber), c => c.RegistrationNumber },
+                    {nameof(Car.Mileage), c => c.Mileage },
+                    {nameof(Car.ProductionYear), c => c.ProductionYear }
+                };
+
+                var selected = columnsSelector[query.SortBy];
+
+                baseQuery = query.SortDirection == SortDirection.ASC ? baseQuery.OrderBy(selected)
+                    : baseQuery.OrderByDescending(selected);
+            }
+
 
             var cars = baseQuery
               .Skip(query.PageSize * (query.PageNumber - 1))
