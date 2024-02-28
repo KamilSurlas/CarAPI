@@ -22,6 +22,7 @@ namespace CarAPI.Controllers
            _carService = carService;
         }
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<IEnumerable<CarDto>> GetAll([FromQuery] Query query)
         {
             var cars = _carService.GetAll(query);

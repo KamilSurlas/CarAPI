@@ -19,5 +19,7 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
-
+	<ItemGroup>
+		<InternalsVisibleTo Include="CarAPI.IntegrationTests"/>
+	</ItemGroup>
 </Project>
