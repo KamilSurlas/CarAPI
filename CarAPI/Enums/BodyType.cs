@@ -10,6 +10,7 @@
         Supercar,
         Convertible,
         Sedan,
-        Microcar
+        Microcar,
+        Kombi
     }
 }

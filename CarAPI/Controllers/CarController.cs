@@ -31,14 +31,15 @@ namespace CarAPI.Controllers
         }
 
         [HttpGet("{carId}")]
+        [AllowAnonymous]
         public ActionResult<CarDto> GetById([FromRoute] int carId) 
         {
             var car = _carService.GetById(carId);
          
             return Ok(car);
         }
-        [HttpGet]
-        [Route("{registrationNumber}")]
+        [Route("byRegistrationNumber/{registrationNumber}")]
+        [AllowAnonymous]
         public ActionResult<CarDto> GetByRegistrationNumber([FromRoute] string registrationNumber)
         {
             var car = _carService.GetByRegistrationNumber(registrationNumber);

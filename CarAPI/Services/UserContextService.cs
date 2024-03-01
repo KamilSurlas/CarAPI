@@ -10,6 +10,6 @@ namespace CarAPI.Services
             _httpContextAccessor = httpContextAccessor;
         }
         public ClaimsPrincipal? User => _httpContextAccessor.HttpContext?.User is null ? null : _httpContextAccessor.HttpContext?.User;
-        public int? UserId => User is null ? null : int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
+        public int? UserId =>  User is null ? null : int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
     }
 }

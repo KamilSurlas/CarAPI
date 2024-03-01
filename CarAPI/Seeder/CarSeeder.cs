@@ -1,6 +1,7 @@
 ﻿using CarAPI.Entities;
 using CarAPI.Enums;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarAPI.Seeder
 {
@@ -15,27 +16,27 @@ namespace CarAPI.Seeder
         }
         public void Seed()
         {
-            if (_context.Database.CanConnect())
-            {
-                if (!_context.Roles.Any())
+                if (_context.Database.CanConnect())
                 {
-                    var roles = GetRoles();
-                    _context.Roles.AddRange(roles);
-                    _context.SaveChanges();
-                }
-                if(!_context.Users.Where(u => u.RoleId == 2).Any())
-                {
-                    var admin = CreateAdminAccount();
-                    _context.Users.Add(admin);
-                    _context.SaveChanges();
-                }
-                if (!_context.Cars.Any())
-                {
-                    var cars = GetCars();
-                    _context.Cars.AddRange(cars);
-                    _context.SaveChanges();
-                }
-            }
+                    if (!_context.Roles.Any())
+                    {
+                        var roles = GetRoles();
+                        _context.Roles.AddRange(roles);
+                        _context.SaveChanges();
+                    }
+                    if (!_context.Users.Where(u => u.RoleId == 2).Any())
+                    {
+                        var admin = CreateAdminAccount();
+                        _context.Users.Add(admin);
+                        _context.SaveChanges();
+                    }
+                    if (!_context.Cars.Any())
+                    {
+                        var cars = GetCars();
+                        _context.Cars.AddRange(cars);
+                        _context.SaveChanges();
+                    }
+                }           
         }
 
         private User CreateAdminAccount()
@@ -93,7 +94,7 @@ namespace CarAPI.Seeder
                     Engine = new Engine()
                     {
                         Horsepower = 68,
-                        Displacement = 1.0M,
+                        Displacement = 1000M,
                         FuelType = FuelType.Hybrid
                     },
                     OcInsurance = new Insurance()
@@ -127,7 +128,7 @@ namespace CarAPI.Seeder
                     Engine = new Engine()
                     {
                         Horsepower = 80,
-                        Displacement = 1.2M,
+                        Displacement = 1200,
                         FuelType = FuelType.Gasoline
                     },
                     OcInsurance = new Insurance()
