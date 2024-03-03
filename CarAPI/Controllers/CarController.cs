@@ -29,7 +29,6 @@ namespace CarAPI.Controllers
                 
             return Ok(cars);
         }
-
         [HttpGet("{carId}")]
         [AllowAnonymous]
         public ActionResult<CarDto> GetById([FromRoute] int carId) 
@@ -38,7 +37,7 @@ namespace CarAPI.Controllers
          
             return Ok(car);
         }
-        [Route("byRegistrationNumber/{registrationNumber}")]
+        [HttpGet("byRegistrationNumber/{registrationNumber}")]
         [AllowAnonymous]
         public ActionResult<CarDto> GetByRegistrationNumber([FromRoute] string registrationNumber)
         {

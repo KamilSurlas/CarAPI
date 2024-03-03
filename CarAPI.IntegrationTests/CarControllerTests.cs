@@ -13,6 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using System.Text;
 using CarAPI.IntegrationTests.Helpers;
+using CarAPI.Exceptions;
 namespace CarAPI.IntegrationTests
 {
     public class CarControllerTests : IClassFixture<WebApplicationFactory<Program>>
@@ -84,12 +85,38 @@ namespace CarAPI.IntegrationTests
         [Theory]
         [InlineData(900)]
         [InlineData(1000)]
-        public async Task GetById_WithInvalidId_ReturnsNotFound(int id)
+        public async Task GetById_WithNonExistingId_ReturnsNotFound(int id)
         {
 
             var response = await _client.GetAsync("/api/car/" + id);
 
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        }
+        [Theory]
+        [InlineData("GD QWE12")]
+        [InlineData("ST 123SD")]
+        public async Task GetByRegistrationNumber_WithValidNumber_ReturnsOk(string number)
+        {
+            var response = await _client.GetAsync("/api/car/byRegistrationNumber/" + number);
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        }
+        [Theory]
+        [InlineData("BAD NUMBER1")]               
+        public async Task GetByRegistrationNumber_WithNonExistingNumber_ReturnsNotFOund(string number)
+        {
+            var response = await _client.GetAsync("/api/car/byRegistrationNumber/" + number);
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        }
+        [Theory]
+        [InlineData(" ")]
+        [InlineData(null)]
+        public async Task GetByRegistrationNumber_WithEmptyNumber_ReturnsBadRequest(string number)
+        {
+            var response = await _client.GetAsync("/api/car/byRegistrationNumber/" + number);
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
         }
         [Fact]
         public async Task CreateCar_WithValidModel_ReturnsCreated()
@@ -176,6 +203,45 @@ namespace CarAPI.IntegrationTests
             var response = await _client.DeleteAsync("api/car/" + car.Id);
 
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+        }
+        [Fact]
+        public async Task UpdateCar_ForNonExistingCar_ReturnsNotFound()
+        {
+            var response = await _client.PutAsync("car/api/9999",new UpdateCarDto().ToJsonHttpContent());
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        }
+        [Fact]
+        public async Task UpdateCar_ForNonCarOwner_ReturnsForbidden()
+        {
+            var car = new Car()
+            {
+                BrandName = "UpdateTestCarBrandName",
+                ModelName = "UpdateTestCarModelName",
+                CreatedByUserId = 900
+            };
+
+            SeedCar(car);
+
+            var response = await _client.PutAsync("api/car/" + car.Id, new UpdateCarDto().ToJsonHttpContent());
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+        }
+        [Fact]
+        public async Task UpdateCar_ForCarOwner_ReturnsOk()
+        {
+            var car = new Car()
+            {
+                BrandName = "UpdateTestCarBrandName",
+                ModelName = "UpdateTestCarModelName",
+                CreatedByUserId = 1
+            };
+
+            SeedCar(car);
+
+            var response = await _client.PutAsync("api/car/" + car.Id, new UpdateCarDto().ToJsonHttpContent());
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
     }
 }

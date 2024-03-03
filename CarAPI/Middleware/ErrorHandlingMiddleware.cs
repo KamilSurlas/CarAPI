@@ -35,7 +35,7 @@ namespace CarAPI.Middleware
             catch (BadEmailOrPassword exc)
             {
                 _logger.LogError(exc, exc.Message);
-                context.Response.StatusCode = 500;
+                context.Response.StatusCode = 400;
                 await context.Response.WriteAsync(exc.Message);
             }
             catch (DbUpdateException exc)
