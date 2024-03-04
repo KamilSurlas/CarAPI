@@ -20,7 +20,6 @@ namespace CarAPI.IntegrationTests
     {
         private HttpClient _client;
         private WebApplicationFactory<Program> _factory;
-        private Mock<IAccountService> _accountServiceMock = new();
         public AccountControllerTests(WebApplicationFactory<Program> factory)
         {
             _factory = factory.WithWebHostBuilder(builder =>
@@ -32,7 +31,7 @@ namespace CarAPI.IntegrationTests
 
                     services.Remove(dbContextOptions);
 
-                   services.AddSingleton<IAccountService>(_accountServiceMock.Object);
+                   
 
                     services
                      .AddDbContext<CarDbContext>(options => options.UseInMemoryDatabase("CarDb", db => db.EnableNullChecks(false)));
@@ -41,7 +40,21 @@ namespace CarAPI.IntegrationTests
             });
                 _client = _factory.CreateClient();
         }
-        
+        private void SeedUser()
+        {
+            var hasher = new PasswordHasher<User>();
+            var testUser = new User()
+            {
+                Email = "TestEmail@test.com"
+            };
+            testUser.HashedPassword = hasher.HashPassword(testUser, "TestPassword");
+            var scope = _factory.Services.GetService<IServiceScopeFactory>();
+            using var createdScope = scope?.CreateScope();
+            var dbContext = createdScope?.ServiceProvider.GetService<CarDbContext>();
+
+            dbContext?.Users.Add(testUser);
+            dbContext?.SaveChanges();
+        }
         [Fact]
         public async Task RegisterUser_ForValidModel_ReturnsOk()
         {
@@ -80,13 +93,13 @@ namespace CarAPI.IntegrationTests
         [Fact]
         public async Task Login_ForRegisteredUser_ReturnsOk()
         {
-            _accountServiceMock.Setup(e => e.GetJwtToken(It.IsAny<LoginDto>())).Returns("jwt");
+            SeedUser();
                 
 
             var loginDto = new LoginDto()
             {
-                Email = "loginTest@test.com",
-                Password = "loginPasswordTest"
+                Email = "TestEmail@test.com",
+                Password = "TestPassword"
             };
 
 
@@ -95,13 +108,13 @@ namespace CarAPI.IntegrationTests
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
         [Fact]
-        public async Task Login_ForBadPasswordOrEmail_ReturnsBadRequest()
+        public async Task Login_ForBadPassword_ReturnsBadRequest()
         {
-            _accountServiceMock.Setup(e => e.GetJwtToken(It.IsAny<LoginDto>())).Throws(new BadEmailOrPassword(" "));
+            SeedUser();
  
             var loginDto = new LoginDto()
             {
-                Email = "LoginTest@test.com",
+                Email = "TestEmail@test.com",
                 Password = "ThatIsBadPassword"
             };
             
@@ -111,6 +124,24 @@ namespace CarAPI.IntegrationTests
 
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
           
+        }
+        [Fact]
+        public async Task Login_ForBadEmail_ReturnsBadRequest()
+        {
+            SeedUser();
+
+            var loginDto = new LoginDto()
+            {
+                Email = "BadEmail@test.com",
+                Password = "TestPassword"
+            };
+
+
+
+            var response = await _client.PostAsync("/api/account/login", loginDto.ToJsonHttpContent());
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+           
         }
     }
 }
