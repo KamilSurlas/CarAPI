@@ -144,5 +144,232 @@ namespace CarAPI.IntegrationTests
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
             response.Headers.Location.Should().NotBeNull();
         }
+        [Fact]
+        public async Task CreateRepair_ForNonExistingCarWithValidModel_ReturnsNotFound()
+        {
+           
+            var repairModel = new NewRepairDto()
+            {
+                Description = "TestRepair",
+                RepairCost = 100.0M,
+                RepairDate = DateTime.Now,
+            };
+            var response = await _client.PostAsync($"api/car/{999}/repair", repairModel.ToJsonHttpContent());
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        }
+        [Fact]
+        public async Task CreateRepair_ForNonCarOwnerWithValidModel_ReturnsForbidden()
+        {
+            var car = new Car()
+            {
+                BrandName = "RepairTest",
+                ModelName = "RepairTest",
+                CreatedByUserId = 2
+            };
+
+            seedCar(car);
+            var repairModel = new NewRepairDto()
+            {
+                Description = "TestRepair",
+                RepairCost = 100.0M,
+                RepairDate = DateTime.Now,
+            };
+            var response = await _client.PostAsync($"api/car/{car.Id}/repair", repairModel.ToJsonHttpContent());
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+        }
+        [Fact]
+        public async Task CreateRepair_ForExistingCarWithInvalidModel_ReturnsBadRequest()
+        {
+            var car = new Car()
+            {
+                BrandName = "RepairTest",
+                ModelName = "RepairTest",
+                CreatedByUserId = 1
+            };
+
+            seedCar(car);
+
+            var repairModel = new NewRepairDto()
+            {             
+                RepairDate = DateTime.Now,
+            };
+
+            var response = await _client.PostAsync($"api/car/{car.Id}/repair", repairModel.ToJsonHttpContent());
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);           
+        }
+        [Fact]
+        public async Task DeleteAllRepairs_ForExistingCarForCarOwner_ReturnsNoContent()
+        {
+            var car = new Car()
+            {
+                BrandName = "RepairTest",
+                ModelName = "RepairTest",
+                CreatedByUserId = 1
+            };
+
+            var repair = new Repair()
+            {
+                CarId = car.Id
+            };
+
+            SeedRepair(car, repair);
+
+            var response = await _client.DeleteAsync($"api/car/{car.Id}/repair");
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+        }
+        [Fact]
+        public async Task DeleteAllRepairs_ForExistingCarForNonCarOwner_ReturnsForbidden()
+        {
+            var car = new Car()
+            {
+                BrandName = "RepairTest",
+                ModelName = "RepairTest",
+                CreatedByUserId = 2
+            };
+
+            var repair = new Repair()
+            {
+                CarId = car.Id
+            };
+
+            SeedRepair(car, repair);
+
+            var response = await _client.DeleteAsync($"api/car/{car.Id}/repair");
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+        }
+        [Fact]
+        public async Task DeleteAllRepairs_ForNonExistingCarForCarOwner_ReturnsNotFound()
+        {
+            var car = new Car()
+            {
+                BrandName = "RepairTest",
+                ModelName = "RepairTest",
+                CreatedByUserId = 2
+            };
+
+            var repair = new Repair()
+            {
+                CarId = car.Id
+            };
+
+            SeedRepair(car, repair);
+
+            var response = await _client.DeleteAsync($"api/car/{999}/repair");
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        }
+        [Fact]
+        public async Task DeleteRepair_ForExistingCarAndRepairForCarOwner_ReturnsNoContent()
+        {
+            var car = new Car()
+            {
+                BrandName = "RepairTest",
+                ModelName = "RepairTest",
+                CreatedByUserId = 1
+            };
+
+            var repair = new Repair()
+            {
+                CarId = car.Id
+            };
+
+            SeedRepair(car, repair);
+
+            var response = await _client.DeleteAsync($"api/car/{car.Id}/repair/{repair.Id}");
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+        }
+        [Fact]
+        public async Task DeleteRepair_ForExistingCarForNonExistingRepairForCarOwner_ReturnsNotFound()
+        {
+            var car = new Car()
+            {
+                BrandName = "RepairTest",
+                ModelName = "RepairTest",
+                CreatedByUserId = 1
+            };          
+
+            var response = await _client.DeleteAsync($"api/car/{car.Id}/repair/{999}");
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        }
+        [Fact]
+        public async Task DeleteRepair_ForExistingCarAndRepairForNonCarOwner_Returnsorbidden()
+        {
+            var car = new Car()
+            {
+                BrandName = "RepairTest",
+                ModelName = "RepairTest",
+                CreatedByUserId = 2
+            };
+
+            var repair = new Repair()
+            {
+                CarId = car.Id
+            };
+
+            SeedRepair(car, repair);
+
+            var response = await _client.DeleteAsync($"api/car/{car.Id}/repair/{repair.Id}");
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+        }
+        [Fact]
+        public async Task UpdateRepair_ForExistingCarAndRepairForCarOwner_ReturnsOK()
+        {
+            var car = new Car()
+            {
+                BrandName = "RepairTest",
+                ModelName = "RepairTest",
+                CreatedByUserId = 1
+            };
+            var repair = new Repair()
+            {
+                CarId = car.Id
+            };
+
+            SeedRepair(car, repair);
+            var response = await _client.PutAsync($"api/car/{car.Id}/repair/{repair.Id}", new UpdateRepairDto().ToJsonHttpContent());
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        }
+        [Fact]
+        public async Task UpdateRepair_ForExistingCarForNonExistingRepairForCarOwner_ReturnsNotFound()
+        {
+            var car = new Car()
+            {
+                BrandName = "RepairTest",
+                ModelName = "RepairTest",
+                CreatedByUserId = 1
+            };
+            
+            var response = await _client.PutAsync($"api/car/{car.Id}/repair/{999}", new UpdateRepairDto().ToJsonHttpContent());
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        }
+        [Fact]
+        public async Task UpdateRepair_ForExistingCarAndRepairForNonCarOwner_ReturnsForbidden()
+        {
+            var car = new Car()
+            {
+                BrandName = "RepairTest",
+                ModelName = "RepairTest",
+                CreatedByUserId = 2
+            };
+            var repair = new Repair()
+            {
+                CarId = car.Id
+            };
+
+            SeedRepair(car, repair);
+            var response = await _client.PutAsync($"api/car/{car.Id}/repair/{repair.Id}", new UpdateRepairDto().ToJsonHttpContent());
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+        }
     }
 }
