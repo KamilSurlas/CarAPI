@@ -25,12 +25,14 @@ namespace CarAPI.Controllers
             return Created($"/api/car/{carId}/repair/{newRepairId}", null);
         }
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<List<RepairDto>> GetAll([FromRoute] int carId)
         {
             var repairs = _repairService.GetAll(carId);
             return Ok(repairs);
         }
         [HttpGet("{repairId}")]
+        [AllowAnonymous]
         public ActionResult<Repair> GetById([FromRoute] int carId, [FromRoute] int repairId)
         {
             RepairDto repair = _repairService.GetById(carId, repairId);

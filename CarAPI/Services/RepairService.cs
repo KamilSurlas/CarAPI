@@ -40,8 +40,9 @@ namespace CarAPI.Services
 
             var repairEntity = _mapper.Map<Repair>(dto);
             repairEntity.CarId = carId;
+            repairEntity.Car = car;
             repairEntity.AddedByUserId = _userContextService.UserId;
-            var authResult = _authorizationService.AuthorizeAsync(_userContextService.User, repairEntity, new ResourceOperationRequirement(ResourceOperationType.Update)).Result;
+            var authResult = _authorizationService.AuthorizeAsync(_userContextService.User, repairEntity, new ResourceOperationRequirement(ResourceOperationType.Create)).Result;
             if (!authResult.Succeeded)
             {
                 throw new ForbiddenException("Permission denied");

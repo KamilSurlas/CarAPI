@@ -21,10 +21,10 @@ namespace CarAPI.Authorization
                     context.Succeed(requirement);
                 }
             }
-                if (insurance.AddedByUserId == int.Parse(userId))
-                {
-                    context.Succeed(requirement);
-                }      
+            if (insurance.Car.CreatedByUserId == int.Parse(userId))
+            {
+                context.Succeed(requirement);
+            }
             return Task.CompletedTask;
         }
     }

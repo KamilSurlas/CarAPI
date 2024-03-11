@@ -21,12 +21,12 @@ namespace CarAPI.Authorization
                     context.Succeed(requirement);
                 }
             }
-  
-                if (technicalReview.AddedByUserId == int.Parse(userId))
-                {
-                    context.Succeed(requirement);
-                }
-            
+
+            if (technicalReview?.Car?.CreatedByUserId == int.Parse(userId))
+            {
+                context.Succeed(requirement);
+            }
+
             return Task.CompletedTask;
         }
     }

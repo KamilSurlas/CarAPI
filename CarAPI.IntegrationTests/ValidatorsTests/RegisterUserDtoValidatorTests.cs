@@ -90,7 +90,7 @@ namespace CarAPI.IntegrationTests.ValidatorsTests
         }
         [Theory]
         [MemberData(nameof(GetSampleInvalidData))]
-        public void Validate_ForInvalidModel_ReturnsSuccess(RegisterUserDto model)
+        public void Validate_ForInvalidModel_ReturnsFailure(RegisterUserDto model)
         {
             var validator = new RegisterUserDtoValidator(_dbContext);
 
