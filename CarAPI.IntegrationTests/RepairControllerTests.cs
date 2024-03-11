@@ -47,7 +47,7 @@ namespace CarAPI.IntegrationTests
             dbContext?.Cars.Add(car);
             dbContext?.SaveChanges();
         }
-        private void SeedRepair(Car car, Repair repair)
+        private void AssignRepairToCar(Car car, Repair repair)
         {
             var scope = _factory.Services.GetService<IServiceScopeFactory>();
             using var createdScope = scope?.CreateScope();
@@ -64,6 +64,18 @@ namespace CarAPI.IntegrationTests
             dbContext?.Repairs.Add(repair);
             dbContext?.SaveChanges();
         }
+        private void SeedRepair(Repair repair)
+        {
+            var scope = _factory.Services.GetService<IServiceScopeFactory>();
+            using var createdScope = scope?.CreateScope();
+            var dbContext = createdScope?.ServiceProvider.GetService<CarDbContext>();
+
+
+
+            dbContext?.Repairs.Add(repair);
+            dbContext?.SaveChanges();
+        }
+
         [Fact]
         public async Task GetAllRepairs_ForExistingCar_ReturnsOK()
         {
@@ -102,7 +114,7 @@ namespace CarAPI.IntegrationTests
                 CarId = car.Id
             };
         
-           SeedRepair(car, repair);
+           AssignRepairToCar(car, repair);
 
             var response = await _client.GetAsync($"api/car/{car.Id}/repair/{repair.Id}");
 
@@ -215,7 +227,7 @@ namespace CarAPI.IntegrationTests
                 CarId = car.Id
             };
 
-            SeedRepair(car, repair);
+            AssignRepairToCar(car, repair);
 
             var response = await _client.DeleteAsync($"api/car/{car.Id}/repair");
 
@@ -236,7 +248,7 @@ namespace CarAPI.IntegrationTests
                 CarId = car.Id
             };
 
-            SeedRepair(car, repair);
+            AssignRepairToCar(car, repair);
 
             var response = await _client.DeleteAsync($"api/car/{car.Id}/repair");
 
@@ -257,7 +269,7 @@ namespace CarAPI.IntegrationTests
                 CarId = car.Id
             };
 
-            SeedRepair(car, repair);
+            AssignRepairToCar(car, repair);
 
             var response = await _client.DeleteAsync($"api/car/{999}/repair");
 
@@ -278,7 +290,7 @@ namespace CarAPI.IntegrationTests
                 CarId = car.Id
             };
 
-            SeedRepair(car, repair);
+            AssignRepairToCar(car, repair);
 
             var response = await _client.DeleteAsync($"api/car/{car.Id}/repair/{repair.Id}");
 
@@ -313,7 +325,7 @@ namespace CarAPI.IntegrationTests
                 CarId = car.Id
             };
 
-            SeedRepair(car, repair);
+            AssignRepairToCar(car, repair);
 
             var response = await _client.DeleteAsync($"api/car/{car.Id}/repair/{repair.Id}");
 
@@ -333,7 +345,7 @@ namespace CarAPI.IntegrationTests
                 CarId = car.Id
             };
 
-            SeedRepair(car, repair);
+            AssignRepairToCar(car, repair);
             var response = await _client.PutAsync($"api/car/{car.Id}/repair/{repair.Id}", new UpdateRepairDto().ToJsonHttpContent());
 
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
@@ -366,10 +378,31 @@ namespace CarAPI.IntegrationTests
                 CarId = car.Id
             };
 
-            SeedRepair(car, repair);
+            AssignRepairToCar(car, repair);
             var response = await _client.PutAsync($"api/car/{car.Id}/repair/{repair.Id}", new UpdateRepairDto().ToJsonHttpContent());
 
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+        }
+        [Fact]
+        public async Task UpdateRepair_ForExistingCarForInvalidRepairForCarOwner_ReturnsNotFound()
+        {
+            var car = new Car()
+            {
+                BrandName = "RepairTest",
+                ModelName = "RepairTest",
+                CreatedByUserId = 2
+            };
+            var repair = new Repair()
+            {
+                CarId = 999
+            };
+
+            seedCar(car);
+
+            SeedRepair(repair);
+            var response = await _client.PutAsync($"api/car/{car.Id}/repair/{repair.Id}", new UpdateRepairDto().ToJsonHttpContent());
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
         }
     }
 }
