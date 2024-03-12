@@ -36,7 +36,7 @@ namespace CarAPI.IntegrationTests
             _client = _factory.CreateClient();
 
         }
-        private void seedCar(Car car)
+        private void SeedCar(Car car)
         {
             var scope = _factory.Services.GetService<IServiceScopeFactory>();
             using var createdScope = scope?.CreateScope();
@@ -85,7 +85,7 @@ namespace CarAPI.IntegrationTests
                 ModelName = "RepairTest",
             };
 
-            seedCar(car);
+            SeedCar(car);
 
             var response = await _client.GetAsync($"api/car/{car.Id}/repair");
 
@@ -142,7 +142,7 @@ namespace CarAPI.IntegrationTests
                 CreatedByUserId = 1
             };
 
-            seedCar(car);
+            SeedCar(car);
 
             var repairModel = new NewRepairDto()
             {
@@ -180,7 +180,7 @@ namespace CarAPI.IntegrationTests
                 CreatedByUserId = 2
             };
 
-            seedCar(car);
+            SeedCar(car);
             var repairModel = new NewRepairDto()
             {
                 Description = "TestRepair",
@@ -201,11 +201,11 @@ namespace CarAPI.IntegrationTests
                 CreatedByUserId = 1
             };
 
-            seedCar(car);
+            SeedCar(car);
 
             var repairModel = new NewRepairDto()
             {             
-                RepairDate = DateTime.Now,
+                Description = "Test description for repair"
             };
 
             var response = await _client.PostAsync($"api/car/{car.Id}/repair", repairModel.ToJsonHttpContent());
@@ -304,7 +304,9 @@ namespace CarAPI.IntegrationTests
                 BrandName = "RepairTest",
                 ModelName = "RepairTest",
                 CreatedByUserId = 1
-            };          
+            };
+
+            SeedCar(car);
 
             var response = await _client.DeleteAsync($"api/car/{car.Id}/repair/{999}");
 
@@ -397,7 +399,7 @@ namespace CarAPI.IntegrationTests
                 CarId = 999
             };
 
-            seedCar(car);
+            SeedCar(car);
 
             SeedRepair(repair);
             var response = await _client.PutAsync($"api/car/{car.Id}/repair/{repair.Id}", new UpdateRepairDto().ToJsonHttpContent());

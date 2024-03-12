@@ -226,7 +226,7 @@ namespace CarAPI.IntegrationTests
             var response = await _client.PutAsync("api/car/" + car.Id, new UpdateCarDto().ToJsonHttpContent());
 
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
-        }
+        }      
         [Fact]
         public async Task UpdateCar_ForCarOwner_ReturnsOk()
         {

@@ -29,6 +29,7 @@ namespace CarAPI.Services
             var car = GetCarById(carId);         
 
             var technicalReviewEntity = _mapper.Map<TechnicalReview>(dto);
+            technicalReviewEntity.CarId = carId;
             technicalReviewEntity.Car = car;
             technicalReviewEntity.AddedByUserId = _userContextService.UserId;
             var authResult = _authorizationService.AuthorizeAsync(_userContextService.User, technicalReviewEntity, new ResourceOperationRequirement(ResourceOperationType.Create)).Result;

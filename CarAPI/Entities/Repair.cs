@@ -12,6 +12,7 @@ namespace CarAPI.Entities
         public decimal RepairCost { get; set;}
         [Required]
         public int CarId { get; set; }
+        [Required]
         public virtual Car Car { get; set; }
         public int? AddedByUserId { get; set; }
         public virtual User? AddedByUser { get; set; }

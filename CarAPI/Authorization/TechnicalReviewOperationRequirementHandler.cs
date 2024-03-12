@@ -22,7 +22,7 @@ namespace CarAPI.Authorization
                 }
             }
 
-            if (technicalReview?.Car?.CreatedByUserId == int.Parse(userId))
+            if (technicalReview?.Car.CreatedByUserId == int.Parse(userId))
             {
                 context.Succeed(requirement);
             }
