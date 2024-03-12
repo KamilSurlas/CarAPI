@@ -16,27 +16,71 @@ namespace CarAPI.Seeder
         }
         public void Seed()
         {
-                if (_context.Database.CanConnect())
+            if (_context.Database.CanConnect())
+            {
+                if (!_context.Roles.Any())
                 {
-                    if (!_context.Roles.Any())
-                    {
-                        var roles = GetRoles();
-                        _context.Roles.AddRange(roles);
-                        _context.SaveChanges();
-                    }
-                    if (!_context.Users.Where(u => u.RoleId == 2).Any())
-                    {
-                        var admin = CreateAdminAccount();
-                        _context.Users.Add(admin);
-                        _context.SaveChanges();
-                    }
-                    if (!_context.Cars.Any())
-                    {
-                        var cars = GetCars();
-                        _context.Cars.AddRange(cars);
-                        _context.SaveChanges();
-                    }
-                }           
+                    var roles = GetRoles();
+                    _context.Roles.AddRange(roles);
+                    _context.SaveChanges();
+                }
+                if (!_context.Users.Where(u => u.RoleId == 2).Any())
+                {
+                    var admin = CreateAdminAccount();
+                    _context.Users.Add(admin);
+                    _context.SaveChanges();
+                }
+                if (!_context.Users.Where(u => u.RoleId == 3).Any())
+                {
+                    var mechanic = CreateMechanicAccount();
+                    _context.Users.Add(mechanic);
+                    _context.SaveChanges();
+                }
+                if (!_context.Users.Where(u => u.RoleId == 4).Any())
+                {
+                    var insurer = CreateInsurerAccount();
+                    _context.Users.Add(insurer);
+                    _context.SaveChanges();
+                }
+                if (!_context.Cars.Any())
+                {
+                    var cars = GetCars();
+                    _context.Cars.AddRange(cars);
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+        private User CreateInsurerAccount()
+        {
+            var insurer = new User()
+            {
+                DateOfBirth = new DateTime(2000, 01, 01),
+                FirstName = "Insurer",
+                LastName = "Insurer",
+                Email = "insurer@wp.pl",
+                HashedPassword = null!,
+                RoleId = 4
+            };
+
+            insurer.HashedPassword = _passwordHasher.HashPassword(insurer, "insurer123@!");
+            return insurer;
+        }
+
+        private User CreateMechanicAccount()
+        {
+            var mechanic = new User()
+            {
+                DateOfBirth = new DateTime(2000, 01, 01),
+                FirstName = "Mechanic",
+                LastName = "Mechanic",
+                Email = "mechanic@wp.pl",
+                HashedPassword = null!,
+                RoleId = 3
+            };
+
+            mechanic.HashedPassword = _passwordHasher.HashPassword(mechanic, "mechanic123@!");
+            return mechanic;
         }
 
         private User CreateAdminAccount()
@@ -70,7 +114,7 @@ namespace CarAPI.Seeder
              new Role()
              {
                  RoleName = "Mechanic"
-             },           
+             },
              new Role()
              {
                  RoleName = "Insurer"
@@ -112,7 +156,7 @@ namespace CarAPI.Seeder
                             TechnicalReviewResult = TechnicalReviewResult.Positive
                         }
                     }
-                   
+
 
 
                 },
@@ -145,7 +189,7 @@ namespace CarAPI.Seeder
                             Description = "First technical review after production",
                             TechnicalReviewResult = TechnicalReviewResult.Positive
                         }
-                    } 
+                    }
 
 
                 }
