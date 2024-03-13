@@ -16,7 +16,7 @@ namespace CarAPI.Entities
         [MaxLength(15)]
         public string RegistrationNumber { get; set; }
         [Required]
-        [MaxLength(15)]
+        [MaxLength(30)]
         public string ModelName { get; set; }
         public int ProductionYear { get; set; }
         public double Mileage { get; set; } 
