@@ -9,6 +9,7 @@ namespace CarAPI.Models
         [Required]
         public DateTime? EndDate { get; set; }
         [Required]
+        [MaxLength(30)]
         public string PolicyNumber { get; set; }
     }
 }

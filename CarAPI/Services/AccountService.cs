@@ -46,7 +46,7 @@ namespace CarAPI.Services
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, $"{user.FirstName}{user.LastName}"),
                 new Claim(ClaimTypes.Role, $"{user.Role.RoleName}"),
-                new Claim("DateOfBirth", user.DateOfBirth.ToString("yyyy-MM-dd"))
+                new Claim("DateOfBirth", user.DateOfBirth?.ToString("yyyy-MM-dd"))
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

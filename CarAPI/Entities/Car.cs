@@ -7,20 +7,23 @@ namespace CarAPI.Entities
 {
     public class Car
     {
+        [Key]
         public int Id { get; set; }
         [Required]
+        [MaxLength(30)]
         public string BrandName { get; set; }
         [Required]
+        [MaxLength(15)]
         public string RegistrationNumber { get; set; }
         [Required]
+        [MaxLength(15)]
         public string ModelName { get; set; }
-        [Required]
         public int ProductionYear { get; set; }
-        public double Mileage { get; set; }
+        public double Mileage { get; set; } 
         [Required]
-        public BodyType BodyType { get; set; }
+        public BodyType? BodyType { get; set; }
         [Required]
-        public Drivetrain Drivetrain { get; set; }
+        public Drivetrain? Drivetrain { get; set; }
         [Required]
         public virtual Engine Engine { get; set; }
         [Required]

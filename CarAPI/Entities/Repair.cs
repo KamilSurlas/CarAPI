@@ -4,15 +4,15 @@ namespace CarAPI.Entities
 {
     public class Repair
     {
+        [Key]
         public int Id { get; set; }
+        [Required]
+        [MaxLength(150)]
         public string Description { get; set; }
         [Required]
         public DateTime RepairDate { get; set; }
-        [Required]
         public decimal RepairCost { get; set;}
-        [Required]
         public int CarId { get; set; }
-        [Required]
         public virtual Car Car { get; set; }
         public int? AddedByUserId { get; set; }
         public virtual User? AddedByUser { get; set; }

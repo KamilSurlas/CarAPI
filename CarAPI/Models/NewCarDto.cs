@@ -12,24 +12,25 @@ namespace CarAPI.Models
         [MaxLength(30)]
         public string ModelName { get; set; }
         [Required]
+        [MaxLength(15)]
         public string RegistrationNumber { get; set; }
-        public int ProductionYear { get; set; }
         [Required]
-        public double Mileage { get; set; } = 0;
+        public int? ProductionYear { get; set; }
+        public double Mileage { get; set; } = 0.0;
         [Required]
-        public BodyType BodyType { get; set; }
+        public BodyType? BodyType { get; set; }
         [Required]
-        public int EngineHorsepower { get; set; }
+        public int? EngineHorsepower { get; set; }
         [Required]
-        public decimal EngineDisplacement { get; set; }
+        public decimal? EngineDisplacement { get; set; }
         [Required]
-        public FuelType FuelType { get; set; }
+        public FuelType? FuelType { get; set; }
         [Required]
-        public Drivetrain Drivetrain { get; set; }
+        public Drivetrain? Drivetrain { get; set; }
         [Required]
-        public DateTime OcInsuranceStartDate { get; set; }
+        public DateTime? OcInsuranceStartDate { get; set; }
         [Required]
-        public DateTime OcInsuranceEndDate { get; set; } 
+        public DateTime? OcInsuranceEndDate { get; set; } 
         [Required]
         public string OcPolicyNumber { get; set; }
     }

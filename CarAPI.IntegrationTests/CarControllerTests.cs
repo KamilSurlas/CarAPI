@@ -148,12 +148,12 @@ namespace CarAPI.IntegrationTests
         {
             var model = new NewCarDto()
             {
-                RegistrationNumber = "RegistrationNumberTest",
-                ProductionYear = 2019,
+                RegistrationNumber = "Registration",
+               ProductionYear = 2019,
                 Mileage = 10000,
                 BodyType = BodyType.Kombi,
                 EngineHorsepower = 194,
-                EngineDisplacement = 2143M,
+               EngineDisplacement = 2143M,
                 FuelType = FuelType.Gasoline,
                 Drivetrain = Drivetrain.AWD,
                 OcInsuranceStartDate = DateTime.Now,
