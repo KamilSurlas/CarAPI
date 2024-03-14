@@ -4,6 +4,7 @@ using CarAPI.IntegrationTests.Helpers;
 using CarAPI.Models;
 using CarAPI.Services;
 using FluentAssertions;
+using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -22,30 +23,33 @@ namespace CarAPI.IntegrationTests
         private WebApplicationFactory<Program> _factory;
         public AccountControllerTests(WebApplicationFactory<Program> factory)
         {
-            _factory = factory.WithWebHostBuilder(builder =>
-            {
-                builder.ConfigureServices(services =>
-                {
-                    var dbContextOptions = services
-                        .SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<CarDbContext>));
+            _factory = factory
+               .WithWebHostBuilder(builder =>
+               {
+                   builder.ConfigureServices(services =>
+                   {
+                       var dbContextOptions = services
+                           .SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<CarDbContext>));
 
-                    services.Remove(dbContextOptions);
+                       services.Remove(dbContextOptions);
+                      
+                       services
+                        .AddDbContext<CarDbContext>(options => options.UseInMemoryDatabase("CarDb", db => db.EnableNullChecks(false)));
 
-                   
+                   });
+               });
 
-                    services
-                     .AddDbContext<CarDbContext>(options => options.UseInMemoryDatabase("CarDb", db => db.EnableNullChecks(false)));
-
-                });
-            });
-                _client = _factory.CreateClient();
+            _client = _factory.CreateClient();
         }
         private void SeedUser()
         {
             var hasher = new PasswordHasher<User>();
             var testUser = new User()
             {
-                Email = "TestEmail@test.com"
+                FirstName = "TestUser",
+                LastName = "TestUser",
+                DateOfBirth = DateTime.Now,
+                Email = "TestEmail@test.com",
             };
             testUser.HashedPassword = hasher.HashPassword(testUser, "TestPassword");
             var scope = _factory.Services.GetService<IServiceScopeFactory>();

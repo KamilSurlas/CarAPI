@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarAPI.Entities
 {
@@ -18,7 +19,8 @@ namespace CarAPI.Entities
         [Required]
         public DateTime? DateOfBirth { get; set; }
         public string HashedPassword { get; set; }
-        public int RoleId { get; set; }
+        [ForeignKey(nameof(RoleId))]
+        public int RoleId { get; set; } = 1;
         public virtual Role Role{ get; set; }
     }
 }

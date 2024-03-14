@@ -20,8 +20,7 @@ namespace CarAPI.Mapper
                 Email = source.Email,
                 FirstName = source.FirstName,
                 LastName = source.LastName,
-                DateOfBirth = source.DateOfBirth,
-                RoleId = source.RoleId
+                DateOfBirth = source.DateOfBirth
             };
 
             destination.HashedPassword = _passwordHasher.HashPassword(destination,source.Password);

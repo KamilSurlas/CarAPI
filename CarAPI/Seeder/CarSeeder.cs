@@ -138,7 +138,7 @@ namespace CarAPI.Seeder
                     Engine = new Engine()
                     {
                         Horsepower = 68,
-                        Displacement = 1000M,
+                        Displacement = 1.2M,
                         FuelType = FuelType.Hybrid
                     },
                     OcInsurance = new Insurance()
@@ -172,7 +172,7 @@ namespace CarAPI.Seeder
                     Engine = new Engine()
                     {
                         Horsepower = 80,
-                        Displacement = 1200,
+                        Displacement = 1.4M,
                         FuelType = FuelType.Gasoline
                     },
                     OcInsurance = new Insurance()

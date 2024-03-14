@@ -111,7 +111,7 @@ namespace CarAPI.Services
         }
 
         public void UpdateRepair(int carId, int repairId, UpdateRepairDto dto)
-        {
+        {         
             var car = GetCarById(carId);
             var repair = GetRepairById(repairId);
             if (repair.CarId != carId) throw new ContentNotFoundException($"Provided car id is wrong (car id: {carId})");
@@ -120,7 +120,7 @@ namespace CarAPI.Services
             {
                 throw new ForbiddenException("Permission denied");
             }
-            _mapper.Map(dto, repair);
+            _mapper.Map<Repair>(dto);
 
             repair.CarId = carId;
 

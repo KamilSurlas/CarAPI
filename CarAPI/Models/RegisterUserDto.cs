@@ -15,6 +15,5 @@ namespace CarAPI.Models
         public string LastName { get; set; }
         [Required]
         public DateTime? DateOfBirth { get; set; }
-        public int RoleId { get; set; } = 1;
     }
 }

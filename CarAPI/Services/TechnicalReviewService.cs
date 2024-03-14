@@ -122,7 +122,7 @@ namespace CarAPI.Services
             {
                 throw new ForbiddenException("Permission denied");
             }
-            _mapper.Map(dto, technicalReview);
+            _mapper.Map<TechnicalReview>(dto);
 
             technicalReview.CarId = carId;
 

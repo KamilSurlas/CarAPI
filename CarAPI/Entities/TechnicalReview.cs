@@ -1,5 +1,6 @@
 ﻿using CarAPI.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace CarAPI.Entities
@@ -15,8 +16,10 @@ namespace CarAPI.Entities
         public string Description { get; set; }
         [Required]
         public TechnicalReviewResult? TechnicalReviewResult { get; set; }
+        [ForeignKey(nameof(CarId))]
         public int CarId { get; set; }
         public virtual Car Car { get; set; }
+        [ForeignKey(nameof(AddedByUserId))]
         public int? AddedByUserId { get; set; }
         public virtual User? AddedByUser { get; set; }
     }

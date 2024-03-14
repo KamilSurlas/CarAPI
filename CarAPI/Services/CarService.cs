@@ -133,7 +133,7 @@ namespace CarAPI.Services
             {
                 throw new ForbiddenException("Permission denied");
             }
-            _mapper.Map(dto, car);
+            _mapper.Map<Car>(dto);
 
             _context.SaveChanges();
             _logger.LogInformation($"Car with id: {car.Id} has been updated by user with id: {_userContextService.UserId}");
