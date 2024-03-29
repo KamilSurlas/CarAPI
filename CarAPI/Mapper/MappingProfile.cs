@@ -9,6 +9,11 @@ namespace CarAPI.Mapper
     {
         public MappingProfile()
         {
+            CreateMap<decimal?, decimal>().ConvertUsing((src, dest) => src ?? dest);
+            CreateMap<DateTime?, DateTime>().ConvertUsing((src, dest) => src ?? dest);
+            CreateMap<double?, double>().ConvertUsing((src, dest) => src ?? dest);
+
+
             CreateMap<Car, CarDto>()
                 .ForMember(cd => cd.EngineHorsepower, c => c.MapFrom(d => d.Engine.Horsepower))
                 .ForMember(cd => cd.EngineDisplacement, c => c.MapFrom(d => d.Engine.Displacement))
