@@ -17,9 +17,11 @@ namespace CarAPI.Mapper
 
             CreateMap<TechnicalReview, TechnicalReviewDto>();
             CreateMap<Repair, RepairDto>();
-            CreateMap<Insurance,  InsuranceDto>();  
+            CreateMap<Insurance,  InsuranceDto>();
             CreateMap<UpdateCarDto, Car>()
-                 .ForAllMembers(opt => opt.Condition(src => src != null));
+             .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+
+
 
 
 
@@ -40,15 +42,18 @@ namespace CarAPI.Mapper
             CreateMap<NewTechnicalReviewDto,TechnicalReview>();
 
             CreateMap<UpdateTechnicalReviewDto, TechnicalReview>()
-                 .ForAllMembers(opt => opt.Condition(src => src != null));
+                 .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+
 
             CreateMap<NewRepairDto, Repair>();
             CreateMap<UpdateRepairDto, Repair>()
-                 .ForAllMembers(opt => opt.Condition(src => src != null));
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+
 
             CreateMap<NewInsuranceDto, Insurance>();
             CreateMap<UpdateInsuranceDto, Insurance>()
-                 .ForAllMembers(opt => opt.Condition(src => src != null));
+                 .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+
 
             CreateMap<RegisterUserDto, User>().ConvertUsing<RegisterUserConverter>();
                
