@@ -33,7 +33,7 @@ namespace CarAPI.Controllers
         }
         [HttpGet("{repairId}")]
         [AllowAnonymous]
-        public ActionResult<Repair> GetById([FromRoute] int carId, [FromRoute] int repairId)
+        public ActionResult<RepairDto> GetById([FromRoute] int carId, [FromRoute] int repairId)
         {
             RepairDto repair = _repairService.GetById(carId, repairId);
             return Ok(repair);
