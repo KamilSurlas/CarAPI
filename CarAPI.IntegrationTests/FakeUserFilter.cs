@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using CarAPI.Constants;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
 
 namespace CarAPI.IntegrationTests
@@ -12,7 +13,7 @@ namespace CarAPI.IntegrationTests
                 new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, "1"),
-                    new Claim(ClaimTypes.Role, "Admin")
+                    new Claim(ClaimTypes.Role, UserRoles.Admin)
                 }));
 
             context.HttpContext.User = claimsPrincipal;

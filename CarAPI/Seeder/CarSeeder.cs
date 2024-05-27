@@ -1,4 +1,5 @@
-﻿using CarAPI.Entities;
+﻿using CarAPI.Constants;
+using CarAPI.Entities;
 using CarAPI.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -105,19 +106,19 @@ namespace CarAPI.Seeder
          {
              new Role()
              {
-                 RoleName = "User"
+                 RoleName = UserRoles.User
              },
              new Role()
              {
-                 RoleName = "Admin"
+                 RoleName = UserRoles.Admin
              },
              new Role()
              {
-                 RoleName = "Mechanic"
+                 RoleName = UserRoles.Mechanic
              },
              new Role()
              {
-                 RoleName = "Insurer"
+                 RoleName = UserRoles.Insurer
              }
          };
             return roles;

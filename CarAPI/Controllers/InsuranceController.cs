@@ -1,4 +1,5 @@
-﻿using CarAPI.Models;
+﻿using CarAPI.Constants;
+using CarAPI.Models;
 using CarAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ namespace CarAPI.Controllers
 {
     [Route("api/car/{carId}/insurance")]
     [ApiController]
-    [Authorize(Roles = "Insurer,Admin,User")]
+    [Authorize(Roles = UserRoles.User + "," + UserRoles.Insurer + "," + UserRoles.Admin)]
     public class InsuranceController:ControllerBase
     {
         private readonly IInsuranceService _insuranceService;

@@ -1,4 +1,5 @@
-﻿using CarAPI.Entities;
+﻿using CarAPI.Constants;
+using CarAPI.Entities;
 using CarAPI.Models;
 using CarAPI.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +9,7 @@ namespace CarAPI.Controllers
 {
     [Route("api/car/{carId}/repair")]
     [ApiController]
-    [Authorize(Roles = "Admin,Mechanic,User")]
+    [Authorize(Roles = UserRoles.User + "," + UserRoles.Mechanic + "," + UserRoles.Admin)]
     public class RepairController: ControllerBase
     {
         private readonly IRepairService _repairService;
